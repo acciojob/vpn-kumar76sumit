@@ -13,7 +13,7 @@ public class User {
     String password;
     String originalIp;
     String maskedIp;
-    Boolean connected;
+    Boolean connected=false;
     @ManyToMany
     @JoinColumn
     List<ServiceProvider> serviceProviderList=new ArrayList<>();
