@@ -39,28 +39,27 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(user.getConnected()) throw new Exception("Already connected");
 
         if(user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName)) return user;
-        else {
-            if(user.getServiceProviderList().isEmpty()) throw new Exception("Unable to connect");
-            List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
-            serviceProviderList.sort(Comparator.comparingInt(ServiceProvider :: getId));
-            for(ServiceProvider serviceProvider:serviceProviderList) {
-                for(Country country:serviceProvider.getCountryList()) {
-                    if(country.getCountryName().name().equalsIgnoreCase(countryName)) {
-                        Connection connection=new Connection();
-                        connection.setUser(user);
-                        connection.setServiceProvider(serviceProvider);
+        List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
+        if(user.getServiceProviderList().isEmpty()) throw new Exception("Unable to connect");
+        serviceProviderList.sort(Comparator.comparingInt(ServiceProvider :: getId));
+        for(ServiceProvider serviceProvider:serviceProviderList) {
+            for(Country country:serviceProvider.getCountryList()) {
+                if(country.getCountryName().name().equalsIgnoreCase(countryName)) {
+                    Connection connection=new Connection();
+                    connection.setUser(user);
+                    connection.setServiceProvider(serviceProvider);
 
-                        serviceProvider.getConnectionList().add(connection);
+                    serviceProvider.getConnectionList().add(connection);
 
-                        user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+user.getId());
-                        user.getServiceProviderList().add(serviceProvider);
-                        user.getConnectionList().add(connection);
-                        user.setConnected(true);
+                    user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+user.getId());
+                    user.getServiceProviderList().add(serviceProvider);
+                    user.getConnectionList().add(connection);
+                    user.setConnected(true);
 
-                        serviceProviderRepository2.save(serviceProvider);
-                        connectionRepository2.save(connection);
-                        return userRepository2.save(user);
-                    }
+                    serviceProviderRepository2.save(serviceProvider);
+                    connectionRepository2.save(connection);
+                    userRepository2.save(user);
+                    return user;
                 }
             }
         }
