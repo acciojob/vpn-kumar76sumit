@@ -35,63 +35,29 @@ public class ConnectionServiceImpl implements ConnectionService {
         //Else, establish the connection where the maskedIp is "updatedCountryCode.serviceProviderId.userId"
         // and return the updated user. If multiple service providers allow you to connect to the country,
         // use the service provider having smallest id.
-//        User user=userRepository2.findById(userId).get();
-//        if(user.getConnected()) throw new Exception("Already connected");
-//
-//        if(user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName)) return user;
-//        List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
-//        if(serviceProviderList.isEmpty()) throw new Exception("Unable to connect");
-//        serviceProviderList.sort(Comparator.comparingInt(ServiceProvider :: getId));
-//        for(ServiceProvider serviceProvider:serviceProviderList)
-//            for(Country country:serviceProvider.getCountryList())
-//                if(country.getCountryName().name().equalsIgnoreCase(countryName)) {
-//                    Connection connection=new Connection();
-//                    connection.setUser(user);
-//                    connection.setServiceProvider(serviceProvider);
-//
-//                    serviceProvider.getConnectionList().add(connection);
-//
-//                    user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+user.getId());
-//                    user.getServiceProviderList().add(serviceProvider);
-//                    user.getConnectionList().add(connection);
-//                    user.setConnected(true);
-//
-//                    serviceProviderRepository2.save(serviceProvider);
-//                    userRepository2.save(user);
-//                    return user;
-//                }
-//
-//        throw new Exception("Unable to connect");
-        User user = userRepository2.findById(userId).get();
+        User user=userRepository2.findById(userId).get();
+        if(user.getConnected()) throw new Exception("Already connected");
 
-        if (user.getConnected())
-            throw new Exception("Already connected");
-
-        if (user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName))
-            return user;
-
-        List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
-        if (serviceProviderList.isEmpty())
-            throw new Exception("Unable to connect");
-        serviceProviderList.sort(Comparator.comparingInt(ServiceProvider::getId));
-
-        for (ServiceProvider serviceProvider : serviceProviderList)
-            for (Country country : serviceProvider.getCountryList())
-                if (country.getCountryName().name().equalsIgnoreCase(countryName)) {
-                    Connection connection = new Connection();
-                    connection.setServiceProvider(serviceProvider);
+        if(user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName)) return user;
+        List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
+        if(serviceProviderList.isEmpty()) throw new Exception("Unable to connect");
+        serviceProviderList.sort(Comparator.comparingInt(ServiceProvider :: getId));
+        for(ServiceProvider serviceProvider:serviceProviderList)
+            for(Country country:serviceProvider.getCountryList())
+                if(country.getCountryName().name().equalsIgnoreCase(countryName)) {
+                    Connection connection=new Connection();
                     connection.setUser(user);
+                    connection.setServiceProvider(serviceProvider);
 
                     serviceProvider.getConnectionList().add(connection);
 
+                    user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+user.getId());
+                    user.getServiceProviderList().add(serviceProvider);
                     user.getConnectionList().add(connection);
                     user.setConnected(true);
-                    user.setMaskedIp(country.getCode() + "." + serviceProvider.getId() + "." + user.getId());
 
                     serviceProviderRepository2.save(serviceProvider);
-
                     userRepository2.save(user);
-
                     return user;
                 }
 
@@ -102,8 +68,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         //If the given user was not connected to a vpn, throw "Already disconnected" exception.
         //Else, disconnect from vpn, make masked Ip as null, update relevant attributes and return updated user.
         User user=userRepository2.findById(userId).get();
-        if(!user.getConnected())
-            throw new Exception("Already disconnected");
+        if(!user.getConnected()) throw new Exception("Already disconnected");
         user.setConnected(false);
         user.setMaskedIp(null);
         userRepository2.save(user);
