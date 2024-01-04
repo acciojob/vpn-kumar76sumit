@@ -37,14 +37,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         // use the service provider having smallest id.
         User user=userRepository2.findById(userId).get();
         if(user.getConnected()) throw new Exception("Already connected");
-        CountryName countryName1=null;
-        if(countryName.equalsIgnoreCase("ind")) countryName1=IND;
-        else if(countryName.equalsIgnoreCase("aus")) countryName1=AUS;
-        else if(countryName.equalsIgnoreCase("usa")) countryName1=USA;
-        else if(countryName.equalsIgnoreCase("chi")) countryName1=CHI;
-        else if(countryName.equalsIgnoreCase("jpn")) countryName1=JPN;
 
-        if(user.getOriginalCountry().getCountryName().equals(countryName1)) return user;
+        if(user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName)) return user;
         else {
             if(user.getServiceProviderList().isEmpty()) throw new Exception("Unable to connect");
             List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
