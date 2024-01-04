@@ -44,7 +44,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         else if(countryName.equalsIgnoreCase("chi")) countryName1=CHI;
         else if(countryName.equalsIgnoreCase("jpn")) countryName1=JPN;
 
-        if(user.getCountry().getCountryName().equals(countryName1)) return user;
+        if(user.getOriginalCountry().getCountryName().equals(countryName1)) return user;
         else {
             if(user.getServiceProviderList().isEmpty()) throw new Exception("Unable to connect");
             List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
