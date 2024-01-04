@@ -42,8 +42,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
         if(serviceProviderList.isEmpty()) throw new Exception("Unable to connect");
         serviceProviderList.sort(Comparator.comparingInt(ServiceProvider :: getId));
-        for(ServiceProvider serviceProvider:serviceProviderList) {
-            for(Country country:serviceProvider.getCountryList()) {
+        for(ServiceProvider serviceProvider:serviceProviderList)
+            for(Country country:serviceProvider.getCountryList())
                 if(country.getCountryName().name().equalsIgnoreCase(countryName)) {
                     Connection connection=new Connection();
                     connection.setUser(user);
@@ -60,8 +60,6 @@ public class ConnectionServiceImpl implements ConnectionService {
                     userRepository2.save(user);
                     return user;
                 }
-            }
-        }
         throw new Exception("Unable to connect");
     }
     @Override
