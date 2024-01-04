@@ -29,26 +29,45 @@ public class UserServiceImpl implements UserService {
         // The originalIp of the user should be "countryCode.userId" and return the user.
         // Note that right now user is not connected and thus connected would be false and maskedIp would be null
         //Note that the userId is created automatically by the repository layer
-        User user=new User();
-        CountryName countryName1=null;
-        if(countryName.equalsIgnoreCase("ind")) countryName1=IND;
-        else if(countryName.equalsIgnoreCase("aus")) countryName1=AUS;
-        else if(countryName.equalsIgnoreCase("usa")) countryName1=USA;
-        else if(countryName.equalsIgnoreCase("chi")) countryName1=CHI;
-        else if(countryName.equalsIgnoreCase("jpn")) countryName1=JPN;
+//        User user=new User();
+//        CountryName countryName1=null;
+//        if(countryName.equalsIgnoreCase("ind")) countryName1=IND;
+//        else if(countryName.equalsIgnoreCase("aus")) countryName1=AUS;
+//        else if(countryName.equalsIgnoreCase("usa")) countryName1=USA;
+//        else if(countryName.equalsIgnoreCase("chi")) countryName1=CHI;
+//        else if(countryName.equalsIgnoreCase("jpn")) countryName1=JPN;
+//        user.setUsername(username);
+//        user.setPassword(password);
+//        user.setConnected(false);
+//
+//        Country country=new Country();
+//        country.setCountryName(countryName1);
+//        country.setCode(countryName1.toCode());
+//        country.setUser(user);
+//        countryRepository3.save(country);
+//        user.setOriginalCountry(country);
+//        int userId=userRepository3.save(user).getId();
+//        user.setOriginalIp(country.getCode()+"."+userId);
+//        userRepository3.save(user);
+//        return user;
+        Country country = new Country();
+
+        try {
+            country.setCountryName(CountryName.valueOf(countryName.toUpperCase()));
+            country.setCode(country.getCountryName().toCode());
+        }
+        catch (IllegalArgumentException ignored) {
+            throw new Exception("Country not found");
+        }
+
+        User user = new User();
         user.setUsername(username);
         user.setPassword(password);
-        user.setConnected(false);
-
-        Country country=new Country();
-        country.setCountryName(countryName1);
-        country.setCode(countryName1.toCode());
-        country.setUser(user);
-        countryRepository3.save(country);
         user.setOriginalCountry(country);
-        int userId=userRepository3.save(user).getId();
-        user.setOriginalIp(country.getCode()+"."+userId);
+        user.setOriginalIp(country.getCode() + "." + user.getId());
+
         userRepository3.save(user);
+
         return user;
     }
 
