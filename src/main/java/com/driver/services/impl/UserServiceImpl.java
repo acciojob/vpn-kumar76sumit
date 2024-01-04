@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         serviceProvider.getUsers().add(user);
         user.getServiceProviderList().add(serviceProvider);
         serviceProviderRepository3.save(serviceProvider);
-        return userRepository3.save(user);
+        userRepository3.save(user);
+        return user;
     }
 }
