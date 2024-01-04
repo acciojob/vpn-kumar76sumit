@@ -60,6 +60,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     userRepository2.save(user);
                     return user;
                 }
+
         throw new Exception("Unable to connect");
     }
     @Override
