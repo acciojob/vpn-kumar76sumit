@@ -76,8 +76,8 @@ public class UserServiceImpl implements UserService {
         //subscribe to the serviceProvider by adding it to the list of providers and return updated User
         ServiceProvider serviceProvider=serviceProviderRepository3.findById(serviceProviderId).get();
         User user=userRepository3.findById(userId).get();
-        serviceProvider.getUsers().add(user);
         user.getServiceProviderList().add(serviceProvider);
+        serviceProvider.getUsers().add(user);
         serviceProviderRepository3.save(serviceProvider);
         return user;
     }
