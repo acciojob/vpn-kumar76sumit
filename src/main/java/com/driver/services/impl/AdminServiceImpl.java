@@ -40,28 +40,23 @@ public class AdminServiceImpl implements AdminService {
         serviceProvider.setName(providerName);
         serviceProvider.setAdmin(admin);
         admin.getServiceProviders().add(serviceProvider);
-        serviceProviderRepository1.save(serviceProvider);
         adminRepository1.save(admin);
         return admin;
     }
 
     @Override
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception{
-        CountryName countryName1=null;
-        if(countryName.equalsIgnoreCase("ind")) countryName1=IND;
-        else if(countryName.equalsIgnoreCase("aus")) countryName1=AUS;
-        else if(countryName.equalsIgnoreCase("usa")) countryName1=USA;
-        else if(countryName.equalsIgnoreCase("chi")) countryName1=CHI;
-        else if(countryName.equalsIgnoreCase("jpn")) countryName1=JPN;
-        else throw new Exception("Country not found");
+        Country country = new Country();
+        for (CountryName cn : CountryName.values())
+            if (cn.name().equalsIgnoreCase(countryName)) {
+                country.setCountryName(cn);
+                country.setCode(cn.toCode());
+                break;
+            }
+        if (country.getCountryName() == null) throw new Exception("Country not found");
 
         ServiceProvider serviceProvider=serviceProviderRepository1.findById(serviceProviderId).get();
-        Country country=new Country();
-        country.setCountryName(countryName1);
-        country.setCode(countryName1.toCode());
         country.setServiceProvider(serviceProvider);
-        countryRepository1.save(country);
-
         serviceProvider.getCountryList().add(country);
         serviceProviderRepository1.save(serviceProvider);
         return serviceProvider;

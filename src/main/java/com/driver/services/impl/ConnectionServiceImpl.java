@@ -57,7 +57,6 @@ public class ConnectionServiceImpl implements ConnectionService {
                     user.setConnected(true);
 
                     serviceProviderRepository2.save(serviceProvider);
-//                    connectionRepository2.save(connection);
                     userRepository2.save(user);
                     return user;
                 }
