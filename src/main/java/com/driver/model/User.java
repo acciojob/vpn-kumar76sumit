@@ -15,6 +15,7 @@ public class User {
     String maskedIp;
     Boolean connected;
     @ManyToMany
+    @JoinColumn
     List<ServiceProvider> serviceProviderList=new ArrayList<>();
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     List<Connection> connectionList=new ArrayList<>();

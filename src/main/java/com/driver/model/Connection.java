@@ -7,8 +7,10 @@ public class Connection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
+    @JoinColumn
     User user;
     @ManyToOne
+    @JoinColumn
     ServiceProvider serviceProvider;
 
     public Connection() {

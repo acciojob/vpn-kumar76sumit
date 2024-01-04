@@ -11,8 +11,10 @@ public class Country {
     CountryName countryName;
     String code;
     @OneToOne
+    @JoinColumn
     User user;
     @ManyToOne
+    @JoinColumn
     ServiceProvider serviceProvider;
 
     public Country() {
