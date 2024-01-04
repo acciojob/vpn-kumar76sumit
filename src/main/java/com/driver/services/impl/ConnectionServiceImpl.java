@@ -41,7 +41,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName)) return user;
         List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
         if(serviceProviderList.isEmpty()) throw new Exception("Unable to connect");
-        serviceProviderList.sort(Comparator.comparingInt(ServiceProvider :: getId));
+        serviceProviderList.sort(Comparator.comparingInt(ServiceProvider::getId));
         for(ServiceProvider serviceProvider:serviceProviderList)
             for(Country country:serviceProvider.getCountryList())
                 if(country.getCountryName().name().equalsIgnoreCase(countryName)) {
